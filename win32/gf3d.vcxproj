@@ -41,14 +41,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\djkehoe\git\gf3d\include;C:\Users\djkehoe\git\libs\VulkanSDK\1.1.82.1\Include;C:\Users\djkehoe\git\libs\SDL2_ttf-2.0.14\include;C:\Users\djkehoe\git\libs\SDL2_mixer-2.0.2\include;C:\Users\djkehoe\git\libs\SDL2_image-2.0.3\include;C:\Users\djkehoe\git\libs\SDL2-2.0.8\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\djkehoe\git\libs\VulkanSDK\1.1.82.1\Lib32;C:\Users\djkehoe\git\libs\SDL2_ttf-2.0.14\lib\x86;C:\Users\djkehoe\git\libs\SDL2_mixer-2.0.2\lib\x86;C:\Users\djkehoe\git\libs\SDL2_image-2.0.3\lib\x86;C:\Users\djkehoe\git\libs\SDL2-2.0.8\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Joe\Documents\devFiles\SDL2_image-2.0.3\include;C:\Users\Joe\Documents\Visual Studio 2013\Projects\gf3d\include;C:\Users\Joe\Documents\devFiles\VulkanSDK\1.1.85.0\Include;C:\Users\Joe\Documents\devFiles\SDL2_ttf-2.0.14\include;C:\Users\Joe\Documents\devFiles\SDL2_mixer-2.0.2\include;C:\Users\Joe\Documents\devFiles\SDL2-2.0.8\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Joe\Documents\devFiles\VulkanSDK\1.1.85.0\Lib32;C:\Users\Joe\Documents\devFiles\SDL2_ttf-2.0.14\lib\x86;C:\Users\Joe\Documents\devFiles\SDL2_mixer-2.0.2\lib\x86;C:\Users\Joe\Documents\devFiles\SDL2_image-2.0.3\lib\x86;C:\Users\Joe\Documents\devFiles\SDL2-2.0.8\lib\x86;$(LibraryPath)</LibraryPath>
     <OutDir>..</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\djkehoe\git\gf3d\include;C:\Users\djkehoe\git\libs\VulkanSDK\1.1.82.1\Include;C:\Users\djkehoe\git\libs\SDL2_ttf-2.0.14\include;C:\Users\djkehoe\git\libs\SDL2_mixer-2.0.2\include;C:\Users\djkehoe\git\libs\SDL2_image-2.0.3\include;C:\Users\djkehoe\git\libs\SDL2-2.0.8\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\djkehoe\git\libs\VulkanSDK\1.1.82.1\Lib32;C:\Users\djkehoe\git\libs\SDL2_ttf-2.0.14\lib\x86;C:\Users\djkehoe\git\libs\SDL2_mixer-2.0.2\lib\x86;C:\Users\djkehoe\git\libs\SDL2_image-2.0.3\lib\x86;C:\Users\djkehoe\git\libs\SDL2-2.0.8\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Joe\Documents\devFiles\SDL2_image-2.0.3\include;C:\Users\Joe\Documents\Visual Studio 2013\Projects\gf3d\include;C:\Users\Joe\Documents\devFiles\VulkanSDK\1.1.85.0\Include;C:\Users\Joe\Documents\devFiles\SDL2_ttf-2.0.14\include;C:\Users\Joe\Documents\devFiles\SDL2_mixer-2.0.2\include;C:\Users\Joe\Documents\devFiles\SDL2-2.0.8\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Joe\Documents\devFiles\VulkanSDK\1.1.85.0\Lib32;C:\Users\Joe\Documents\devFiles\SDL2_ttf-2.0.14\lib\x86;C:\Users\Joe\Documents\devFiles\SDL2_mixer-2.0.2\lib\x86;C:\Users\Joe\Documents\devFiles\SDL2_image-2.0.3\lib\x86;C:\Users\Joe\Documents\devFiles\SDL2-2.0.8\lib\x86;$(LibraryPath)</LibraryPath>
     <OutDir>..</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -62,7 +62,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>sdl2_ttf.lib;sdl2_mixer.lib;sdl2_image.lib;SDL2.lib;SDL2main.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;SDL2.lib;SDL2main.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -89,10 +89,13 @@
     <ClCompile Include="..\src\gf3d_commands.c" />
     <ClCompile Include="..\src\gf3d_extensions.c" />
     <ClCompile Include="..\src\gf3d_matrix.c" />
+    <ClCompile Include="..\src\gf3d_mesh.c" />
     <ClCompile Include="..\src\gf3d_model.c" />
+    <ClCompile Include="..\src\gf3d_obj_load.c" />
     <ClCompile Include="..\src\gf3d_pipeline.c" />
     <ClCompile Include="..\src\gf3d_shaders.c" />
     <ClCompile Include="..\src\gf3d_swapchain.c" />
+    <ClCompile Include="..\src\gf3d_texture.c" />
     <ClCompile Include="..\src\gf3d_types.c" />
     <ClCompile Include="..\src\gf3d_validation.c" />
     <ClCompile Include="..\src\gf3d_vector.c" />
@@ -105,17 +108,26 @@
     <ClInclude Include="..\include\gf3d_commands.h" />
     <ClInclude Include="..\include\gf3d_extensions.h" />
     <ClInclude Include="..\include\gf3d_matrix.h" />
+    <ClInclude Include="..\include\gf3d_mesh.h" />
     <ClInclude Include="..\include\gf3d_model.h" />
+    <ClInclude Include="..\include\gf3d_obj_load.h" />
     <ClInclude Include="..\include\gf3d_pipeline.h" />
     <ClInclude Include="..\include\gf3d_shaders.h" />
     <ClInclude Include="..\include\gf3d_swapchain.h" />
     <ClInclude Include="..\include\gf3d_text.h" />
+    <ClInclude Include="..\include\gf3d_texture.h" />
     <ClInclude Include="..\include\gf3d_types.h" />
     <ClInclude Include="..\include\gf3d_validation.h" />
     <ClInclude Include="..\include\gf3d_vector.h" />
     <ClInclude Include="..\include\gf3d_vgraphics.h" />
     <ClInclude Include="..\include\gf3d_vqueues.h" />
     <ClInclude Include="..\include\simple_logger.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\shaders\default.frag" />
+    <None Include="..\shaders\default.vert" />
+    <None Include="..\shaders\frag.spv" />
+    <None Include="..\shaders\vert.spv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

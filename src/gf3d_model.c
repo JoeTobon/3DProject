@@ -4,6 +4,8 @@
 #include "simple_logger.h"
 #include "gf3d_obj_load.h"
 
+#define snprintf _snprintf
+
 typedef struct
 {
     Model               *   model_list;

@@ -1,6 +1,8 @@
 #include "gf3d_obj_load.h"
 #include "simple_logger.h"
 
+#include <stdio.h>
+
 void gf3d_obj_get_counts_from_file(ObjData *obj, FILE* file);
 void gf3d_obj_load_get_data_from_file(ObjData *obj, FILE* file);
 

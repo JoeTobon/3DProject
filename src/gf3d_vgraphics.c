@@ -244,6 +244,8 @@ void gf3d_vgraphics_setup(
     gf3d_vgraphics.vk_instance_info.pNext = NULL;
     gf3d_vgraphics.vk_instance_info.pApplicationInfo = &gf3d_vgraphics.vk_app_info;
     
+	enableValidation = 0;
+
     if (enableValidation)
     {
         gf3d_vgraphics.enableValidationLayers = true;
@@ -524,7 +526,7 @@ Bool gf3d_vgraphics_device_validate(VkPhysicalDevice device)
     slog("apiVersion: %i",deviceProperties.apiVersion);
     slog("driverVersion: %i",deviceProperties.driverVersion);
     slog("supports Geometry Shader: %i",deviceFeatures.geometryShader);
-    return (deviceProperties.deviceType == GF3D_VGRAPHICS_DISCRETE)&&(deviceFeatures.geometryShader);
+    return /*(deviceProperties.deviceType == GF3D_VGRAPHICS_DISCRETE)&&*/(deviceFeatures.geometryShader);
 }
 
 VkPhysicalDevice gf3d_vgraphics_select_device()
