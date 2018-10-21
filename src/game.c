@@ -9,6 +9,7 @@
 #include "gf3d_camera.h"
 #include "gf3d_vector.h"
 #include "gf3d_texture.h"
+#include "entity.h"
 
 int main(int argc,char *argv[])
 {
@@ -17,7 +18,7 @@ int main(int argc,char *argv[])
     Uint32 bufferFrame = 0;
     VkCommandBuffer commandBuffer;
     Model *model;
-    Model *model2;
+	Entity *test;
     
     init_logger("gf3d.log");    
     slog("gf3d begin");
@@ -30,26 +31,27 @@ int main(int argc,char *argv[])
         1                       //validation
     );
     
+	entity_system_init(1024);
 	
     // main game loop
     slog("gf3d main loop begin");
-    model = gf3d_model_load("agumon");
-    //model2 = gf3d_model_load("cube");
+	model = gf3d_model_load("agumon");
+    test = entity_load("agumon");
     while(!done)
     {
         SDL_PumpEvents();   // update SDL's internal event structures
         keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
         //update game things here
         
-        gf3d_vgraphics_rotate_camera(0.001);
+        gf3d_vgraphics_rotate_camera(0.01);
         
         // configure render command for graphics command pool
         // for each mesh, get a command and configure it from the pool
         bufferFrame = gf3d_vgraphics_render_begin();
         commandBuffer = gf3d_command_rendering_begin(bufferFrame);
 
-            gf3d_model_draw(model,bufferFrame,commandBuffer);
-            //gf3d_model_draw(model2,bufferFrame,commandBuffer);
+            entity_draw(test, bufferFrame, commandBuffer);
+            //gf3d_model_draw(model,bufferFrame,commandBuffer);
             
         gf3d_command_rendering_end(commandBuffer);
         gf3d_vgraphics_render_end(bufferFrame);

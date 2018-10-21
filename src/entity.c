@@ -81,7 +81,7 @@ void entity_free(Entity *entity)
 	entity->inuse = 0;
 }
 
-void entity_draw(Entity *entity)
+void entity_draw(Entity *entity, Uint32 bufferFrame, VkCommandBuffer commandBuffer)
 {
 	if (!entity)
 	{
@@ -89,7 +89,7 @@ void entity_draw(Entity *entity)
 		return;
 	}
 
-	//gf3d_model_draw(entity->model, entity->bufferFrame, commandBuffer);
+	gf3d_model_draw(entity->model, bufferFrame, commandBuffer);
 }
 
 void entity_draw_all()
@@ -100,9 +100,26 @@ void entity_draw_all()
 	{
 		if (entity_manager.entList[i].inuse)
 		{
-			entity_draw(&entity_manager.entList[i]);
+			//entity_draw(&entity_manager.entList[i]);
 		}
 	}
+}
+
+Entity *entity_load(char *filename)
+{
+	Entity *entity;
+
+	entity = entity_new();
+
+	if (!entity)
+	{
+		slog("Error: Unable to load entity that does not exist");
+		return;
+	}
+
+	entity->model = gf3d_model_load(filename);
+
+	return entity;
 }
 
 void entity_delete(Entity *entity)

@@ -49,12 +49,23 @@ void entity_free(Entity *entity);
  * @brief draws entity to screen
  * @param entity the entity to draw
  */
-void entity_draw(Entity *entity);
+void entity_draw(Entity *entity, Uint32 bufferFrame, VkCommandBuffer commandBuffer);
 
 /**
  * @brief draws all entities in use to the screen
  */
 void entity_draw_all();
+
+/**
+* @brief loads entity with data from file
+* @param filename the name of the file to load data from
+*/
+Entity *entity_load(char *filename);
+
+/**
+* @brief loads all entiies inuse to screen
+*/
+void entity_load_all();
 
 /**
  * @brief deletes/removes an enity from the entity system
