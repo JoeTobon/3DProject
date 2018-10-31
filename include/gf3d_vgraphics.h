@@ -52,5 +52,10 @@ Command *gf3d_vgraphics_get_graphics_command_pool();
 
 VkImageView gf3d_vgraphics_create_image_view(VkImage image, VkFormat format);
 
+void gf3d_vgraphics_rotate_model(UniformBufferObject *ubo, float degrees);
+
+void gf3d_vgraphics_move_model(Vector3D pos);
+
+void gf3d_vgraphics_update_ubo(UniformBufferObject *ubo, uint32_t currentImage);
 
 #endif

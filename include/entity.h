@@ -12,12 +12,18 @@ typedef struct Entity_S
 
 	Uint64 id;
 
+	float scale;
+
 	//Graphics
 	Model *model;
+	UniformBufferObject ubo;
 
 	//physics 
 	Vector3D position;
 	Vector3D velocity;
+	Vector3D axis;
+	Vector3D rotation;
+	Vector3D relative_rotation;
 
 	Uint32 bufferFrame;
 
@@ -54,7 +60,7 @@ void entity_draw(Entity *entity, Uint32 bufferFrame, VkCommandBuffer commandBuff
 /**
  * @brief draws all entities in use to the screen
  */
-void entity_draw_all();
+void entity_draw_all(Uint32 bufferFrame, VkCommandBuffer commandBuffer);
 
 /**
 * @brief loads entity with data from file
@@ -82,5 +88,9 @@ void entity_load_all();
   * @brief update all entities with update functions
   */
  void entity_update_all();
+
+ void player_update();
+
+ void entity_set_draw_ubo(Entity *entity);
 
 #endif

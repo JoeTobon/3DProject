@@ -17,8 +17,8 @@ int main(int argc,char *argv[])
     const Uint8 * keys;
     Uint32 bufferFrame = 0;
     VkCommandBuffer commandBuffer;
-    Model *model;
-	Entity *test;
+   
+	Entity *ent1, *ent2;
     
     init_logger("gf3d.log");    
     slog("gf3d begin");
@@ -35,8 +35,14 @@ int main(int argc,char *argv[])
 	
     // main game loop
     slog("gf3d main loop begin");
-	model = gf3d_model_load("agumon");
-    test = entity_load("agumon");
+	
+
+    ent1 = entity_load("agumon");
+	
+
+	ent1->update = &player_update;
+	
+
     while(!done)
     {
         SDL_PumpEvents();   // update SDL's internal event structures
@@ -50,8 +56,19 @@ int main(int argc,char *argv[])
         bufferFrame = gf3d_vgraphics_render_begin();
         commandBuffer = gf3d_command_rendering_begin(bufferFrame);
 
-            entity_draw(test, bufferFrame, commandBuffer);
-            //gf3d_model_draw(model,bufferFrame,commandBuffer);
+			if (keys[SDL_SCANCODE_O])
+			{
+				ent2 = entity_load("cube");
+				ent2->update = &player_update;
+			}
+			else if (keys[SDL_SCANCODE_P])
+			{
+				entity_delete_all();
+			}
+
+            entity_draw_all(bufferFrame, commandBuffer);
+
+			entity_update_all();
             
         gf3d_command_rendering_end(commandBuffer);
         gf3d_vgraphics_render_end(bufferFrame);
