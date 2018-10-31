@@ -163,3 +163,6 @@ void entity_update_all()
 		entity_manager.entList[i].update(&entity_manager.entList[i]);
 	}
 }
+
+
+

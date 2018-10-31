@@ -2,8 +2,11 @@
 #define __entity_h__
 
 #include <SDL.h>
+#include <string.h>
 #include "gf3d_model.h"
 #include "gf3d_types.h"
+#include "gf3d_model.h"
+#include "gf3d_matrix.h"
 
 
 typedef struct Entity_S
@@ -11,16 +14,17 @@ typedef struct Entity_S
 	Bool inuse;
 
 	Uint64 id;
-
-	//Graphics
-	Model *model;
-
+	
 	//physics 
 	Vector3D position;
+	Vector3D rotation;
 	Vector3D velocity;
 
+	//Mesh data
 	Uint32 bufferFrame;
-
+	VkCommandBuffer commandBuffer;
+	UniformBufferObject ubo;
+	Model *model;
 
 	//Entity specific functions
 	void(*update)(struct Entity_S *self);
@@ -82,5 +86,9 @@ void entity_load_all();
   * @brief update all entities with update functions
   */
  void entity_update_all();
+
+ //Make entity move
+ void entity_configure_redner_pool(Entity *entity);
+ void entity_set_draw_position(Entity *self, Vector3D position);
 
 #endif

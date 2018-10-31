@@ -17,8 +17,12 @@ int main(int argc,char *argv[])
     const Uint8 * keys;
     Uint32 bufferFrame = 0;
     VkCommandBuffer commandBuffer;
-    Model *model;
-	Entity *test;
+
+	Entity *ent1;
+	Entity *ent2;
+
+	//movement
+	float move = 0.0f;
     
     init_logger("gf3d.log");    
     slog("gf3d begin");
@@ -35,8 +39,14 @@ int main(int argc,char *argv[])
 	
     // main game loop
     slog("gf3d main loop begin");
-	model = gf3d_model_load("agumon");
-    test = entity_load("agumon");
+
+    ent1 = entity_load("agumon");
+	ent2 = entity_load("cube");
+
+	ent1->position.x -= 1;
+	ent1->position.y -= 1;
+	ent1->position.z -= 1;
+
     while(!done)
     {
         SDL_PumpEvents();   // update SDL's internal event structures
@@ -50,11 +60,42 @@ int main(int argc,char *argv[])
         bufferFrame = gf3d_vgraphics_render_begin();
         commandBuffer = gf3d_command_rendering_begin(bufferFrame);
 
-            entity_draw(test, bufferFrame, commandBuffer);
-            //gf3d_model_draw(model,bufferFrame,commandBuffer);
-            
+            entity_draw(ent1, bufferFrame, commandBuffer);
+			//entity_draw(ent2, bufferFrame, commandBuffer);
+
+			if (keys[SDL_SCANCODE_K])
+			{
+				entity_draw(ent2, bufferFrame, commandBuffer);
+			}
+
+			if (keys[SDL_SCANCODE_L])
+			{
+				entity_delete(ent2, bufferFrame, commandBuffer);
+			}
+
+			if (keys[SDL_SCANCODE_W])
+			{
+				move = 2.0f;
+			}
+			else if (keys[SDL_SCANCODE_S])
+			{
+				move = -2.0f;
+			}
+			else if (keys[SDL_SCANCODE_A])
+			{
+				move = 1.0f;
+			}
+			else if (keys[SDL_SCANCODE_D])
+			{
+				move = -1.0f;
+			}
+			else
+			{
+				move = 0;
+			}
+
         gf3d_command_rendering_end(commandBuffer);
-        gf3d_vgraphics_render_end(bufferFrame);
+        gf3d_vgraphics_render_end(bufferFrame, keys, move);
 
         if (keys[SDL_SCANCODE_ESCAPE])done = 1; // exit condition
     }    

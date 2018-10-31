@@ -464,7 +464,7 @@ Uint32 gf3d_vgraphics_render_begin()
     return imageIndex;
 }
 
-void gf3d_vgraphics_render_end(Uint32 imageIndex)
+void gf3d_vgraphics_render_end(Uint32 imageIndex, Uint8 * keys, float direction)
 {
     VkPresentInfoKHR presentInfo = {0};
     VkSubmitInfo submitInfo = {0};
@@ -474,7 +474,9 @@ void gf3d_vgraphics_render_end(Uint32 imageIndex)
     VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
     swapChains[0] = gf3d_swapchain_get();
 
-    gf3d_vgraphics_update_uniform_buffer(imageIndex);
+    //gf3d_vgraphics_update_uniform_buffer(imageIndex);
+
+	move_model_test(imageIndex, direction);
 
     submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 
@@ -716,6 +718,31 @@ void gf3d_vgraphics_rotate_camera(float degrees)
         degrees,
         vector3d(0,0,1));
 
+}
+
+void move_model_test(uint32_t currentImage, float move)
+{
+	void *data;
+	if (move == 1.0f)
+	{
+		gf3d_vgraphics.ubo.model[3][0] += 0.1;
+	}
+	else if (move == -1.0f)
+	{
+		gf3d_vgraphics.ubo.model[3][0] -= 0.1;
+	}
+	else if (move == -2.0f)
+	{
+		gf3d_vgraphics.ubo.model[3][2] -= 0.1f;
+	}
+	else if (move == 2.0f)
+	{
+		gf3d_vgraphics.ubo.model[3][2] += 0.1f;
+	}
+	
+	vkMapMemory(gf3d_vgraphics.device, gf3d_vgraphics.uniformBuffersMemory[currentImage], 0, sizeof(UniformBufferObject), 0, &data);
+	memcpy(data, &gf3d_vgraphics.ubo, sizeof(UniformBufferObject));
+	vkUnmapMemory(gf3d_vgraphics.device, gf3d_vgraphics.uniformBuffersMemory[currentImage]);
 }
 
 Pipeline *gf3d_vgraphics_get_graphics_pipeline()

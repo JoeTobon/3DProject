@@ -34,7 +34,7 @@ VkExtent2D gf3d_vgraphics_get_view_extent();
 void gf3d_vgraphics_clear();
 
 Uint32 gf3d_vgraphics_render_begin();
-void gf3d_vgraphics_render_end(Uint32 imageIndex);
+void gf3d_vgraphics_render_end(Uint32 imageIndex, Uint8 * keys, float direction);
 
 int gf3d_vgraphics_create_buffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer * buffer, VkDeviceMemory * bufferMemory);
 
@@ -52,5 +52,8 @@ Command *gf3d_vgraphics_get_graphics_command_pool();
 
 VkImageView gf3d_vgraphics_create_image_view(VkImage image, VkFormat format);
 
+VkDeviceMemory *get_uniform_buffers_memory();
+
+void move_model_test(uint32_t currentImage, float direction);
 
 #endif
