@@ -34,14 +34,7 @@ int main(int argc,char *argv[])
 	entity_system_init(1024);
 	
     // main game loop
-    slog("gf3d main loop begin");
-	
-
-    ent1 = entity_load("agumon");
-	
-
-	ent1->update = &player_update;
-	
+    slog("gf3d main loop begin");	
 
     while(!done)
     {
@@ -57,6 +50,11 @@ int main(int argc,char *argv[])
         commandBuffer = gf3d_command_rendering_begin(bufferFrame);
 
 			if (keys[SDL_SCANCODE_O])
+			{
+				ent1 = entity_load("agumon");
+				ent1->update = &player_update;
+			}
+			else if (keys[SDL_SCANCODE_L])
 			{
 				ent2 = entity_load("cube");
 				ent2->update = &player_update;
