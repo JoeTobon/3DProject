@@ -10,6 +10,7 @@
 #include "gf3d_vector.h"
 #include "gf3d_texture.h"
 #include "entity.h"
+#include "audio.h"
 
 int main(int argc,char *argv[])
 {
@@ -32,6 +33,7 @@ int main(int argc,char *argv[])
     );
     
 	entity_system_init(1024);
+	audio_system_init(256, 16, 4, 1, 1, 1);
 	
     // main game loop
     slog("gf3d main loop begin");	
