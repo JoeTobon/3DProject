@@ -19,7 +19,7 @@ int main(int argc,char *argv[])
     Uint32 bufferFrame = 0;
     VkCommandBuffer commandBuffer;
    
-	Entity *ent1, *ent2;
+	Entity *ent1, *ent2, *ent3;
     
     init_logger("gf3d.log");    
     slog("gf3d begin");
@@ -32,9 +32,13 @@ int main(int argc,char *argv[])
         1                       //validation
     );
     
-	entity_system_init(1024);
-	audio_system_init(256, 16, 4, 1, 1, 1);
-	
+	entity_system_init(1000);
+	//audio_system_init(256, 16, 4, 1, 1, 1);
+
+	ent3 = entity_load("cube");
+	//ent3->position.x = 20;
+	//ent3->position.y = 30;
+		
     // main game loop
     slog("gf3d main loop begin");	
 
@@ -59,7 +63,7 @@ int main(int argc,char *argv[])
 			else if (keys[SDL_SCANCODE_L])
 			{
 				ent2 = entity_load("cube");
-				ent2->update = &player_update;
+				//ent2->update = &player_update;
 			}
 			else if (keys[SDL_SCANCODE_P])
 			{

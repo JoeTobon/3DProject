@@ -39,6 +39,7 @@ typedef struct
     VkDescriptorPool            descriptorPool;
     VkDescriptorSet         *   descriptorSets;
     Uint32                      descriptorSetCount;
+	VkBuffer					ubo;
 
 }Model;
 

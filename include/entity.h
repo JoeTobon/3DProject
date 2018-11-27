@@ -10,7 +10,7 @@ typedef struct Entity_S
 {
 	Bool inuse;
 
-	Uint64 id;
+	Uint32 id;
 
 	float scale;
 
@@ -89,7 +89,11 @@ void entity_load_all();
   */
  void entity_update_all();
 
+ /**
+ * @brief update function for the player entity
+ */
  void player_update();
+
 
  void entity_set_draw_ubo(Entity *entity);
 

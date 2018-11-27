@@ -97,7 +97,7 @@ void entity_draw(Entity *entity, Uint32 bufferFrame, VkCommandBuffer commandBuff
 	}
 
 	entity_set_draw_ubo(entity);
-	gf3d_vgraphics_update_ubo(&entity->ubo, bufferFrame);
+	gf3d_vgraphics_update_ubo(&entity->ubo, gf3d_vgraphics_uniform_buffer_get_index(entity->model->ubo));
 	gf3d_model_draw(entity->model, bufferFrame, commandBuffer);
 }
 
@@ -127,18 +127,18 @@ Entity *entity_load(char *filename)
 	}
 
 	entity->model = gf3d_model_load(filename);
-
+	
 	gf3d_matrix_identity(entity->ubo.model);
 	gf3d_matrix_identity(entity->ubo.proj);
 	gf3d_matrix_identity(entity->ubo.view);
-
+	
 	gf3d_matrix_view(
 		entity->ubo.view,
 		vector3d(2, 20, 2),
 		vector3d(0, 0, 0),
 		vector3d(0, 0, 1)
 		);
-
+	
 	gf3d_matrix_perspective(
 		entity->ubo.proj,
 		45 * GF3D_DEGTORAD,

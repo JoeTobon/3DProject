@@ -24,6 +24,8 @@
 
 #include "simple_logger.h"
 
+#define VGRAPHICS_UBOS_MAX 1000
+
 typedef struct
 {
     SDL_Window                 *main_window;
@@ -66,6 +68,7 @@ typedef struct
     Uint32                      uniformBufferCount;
     Command                 *   graphicsCommandPool; 
     UniformBufferObject         ubo;
+	char						buffersInUse[VGRAPHICS_UBOS_MAX];
 }vGraphics;
 
 static vGraphics gf3d_vgraphics = {0};
@@ -323,6 +326,57 @@ void gf3d_vgraphics_setup(
     
 }
 
+VkBuffer gf3d_vgraphics_get_uniform_buffer_by_usage()
+{
+	for (int i = 0; i < VGRAPHICS_UBOS_MAX; i++)
+	{
+		if (!gf3d_vgraphics.buffersInUse[i])
+		{
+			gf3d_vgraphics.buffersInUse[i] = 1;
+			return gf3d_vgraphics.uniformBuffers[i];
+		}
+	}
+
+	return VK_NULL_HANDLE;
+}
+
+void gf3d_vgraphics_uniform_buffer_remove_use(VkBuffer index)
+{
+	if (!index)
+	{
+		return;
+	}
+
+	for (int i = 0; i < VGRAPHICS_UBOS_MAX; i++)
+	{
+		if (index == gf3d_vgraphics.uniformBuffers[i])
+		{
+			gf3d_vgraphics.buffersInUse[i] = 0;
+			return;
+		}
+	}
+
+	return;
+}
+
+int gf3d_vgraphics_uniform_buffer_get_index(VkBuffer buffer)
+{
+	if (!buffer)
+	{
+		return -1;
+	}
+
+	for (int i = 0; i < VGRAPHICS_UBOS_MAX; i++)
+	{
+		if (buffer == gf3d_vgraphics.uniformBuffers[i])
+		{
+			return i;
+		}
+	}
+
+	return -1;
+}
+
 VkBuffer gf3d_vgraphics_get_uniform_buffer_by_index(Uint32 index)
 {
     if (index >= gf3d_vgraphics.uniformBufferCount)
@@ -336,7 +390,7 @@ VkBuffer gf3d_vgraphics_get_uniform_buffer_by_index(Uint32 index)
 void gf3d_vgraphics_create_uniform_buffer()
 {
     int i;
-    Uint32 buffercount = gf3d_swapchain_get_swap_image_count();
+    Uint32 buffercount = VGRAPHICS_UBOS_MAX;
     VkDeviceSize bufferSize = sizeof(UniformBufferObject);
 
     gf3d_vgraphics.uniformBuffers = (VkBuffer*)gf3d_allocate_array(sizeof(VkBuffer),buffercount);

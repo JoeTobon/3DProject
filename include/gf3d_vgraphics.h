@@ -58,4 +58,12 @@ void gf3d_vgraphics_move_model(Vector3D pos);
 
 void gf3d_vgraphics_update_ubo(UniformBufferObject *ubo, uint32_t currentImage);
 
+//new stuff added
+VkBuffer gf3d_vgraphics_get_uniform_buffer_by_usage();
+
+int gf3d_vgraphics_uniform_buffer_get_index(VkBuffer buffer);
+
+void gf3d_vgraphics_uniform_buffer_remove_use(VkBuffer index);
+
+
 #endif
