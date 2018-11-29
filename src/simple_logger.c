@@ -19,11 +19,11 @@ void init_logger(const char *log_file_path)
 {
     if (log_file_path == NULL)
     {
-        __log_file = fopen("output.log","a");
+        __log_file = fopen("output.log","w");
     }
     else
     {
-        __log_file = fopen(log_file_path,"a");
+        __log_file = fopen(log_file_path,"w");
     }
     atexit(close_logger);
 }

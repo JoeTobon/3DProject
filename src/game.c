@@ -20,6 +20,7 @@ int main(int argc,char *argv[])
     VkCommandBuffer commandBuffer;
    
 	Entity *ent1, *ent2, *ent3;
+	Music *gameM;
     
     init_logger("gf3d.log");    
     slog("gf3d begin");
@@ -33,11 +34,15 @@ int main(int argc,char *argv[])
     );
     
 	entity_system_init(1000);
-	//audio_system_init(256, 16, 4, 1, 1, 1);
+	audio_system_init(256, 16, 4, 1, 1, 1);
 
 	ent3 = entity_load("cube");
-	//ent3->position.x = 20;
-	//ent3->position.y = 30;
+	ent3->position.x = 5;
+	ent3->position.y = 5;
+
+	//Play Game music
+	gameM = music_new("audio/littletown.mid", -1);
+	music_play(gameM);
 		
     // main game loop
     slog("gf3d main loop begin");	

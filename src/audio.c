@@ -89,7 +89,7 @@ void audio_system_init(Uint32 maxSounds, Uint32 channels, Uint32 channelGroups, 
 	audio_manager.maxMusic = maxMusic;
 
 	atexit(audio_system_close);
-	atexit(Mix_CloseAudio);
+	//atexit(Mix_CloseAudio);
 	atexit(Mix_Quit);
 
 	slog("Audio system initialized");
@@ -169,6 +169,7 @@ Music *music_new(char *filename, int loops)
 
 	if (!filename)
 	{
+		slog("Can't find audio: %s", filename);
 		return;
 	}
 
