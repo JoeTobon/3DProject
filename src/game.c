@@ -20,6 +20,7 @@ int main(int argc,char *argv[])
     VkCommandBuffer commandBuffer;
    
 	Entity *ent1, *ent2, *ent3;
+	Entity *test;
 	Music *gameM;
     
     init_logger("gf3d.log");    
@@ -36,6 +37,7 @@ int main(int argc,char *argv[])
 	entity_system_init(1000);
 	audio_system_init(256, 16, 4, 1, 1, 1);
 
+	//test = entity_load("button");
 	ent3 = entity_load("cube");
 	ent3->position.x = 5;
 	ent3->position.y = 5;
@@ -62,7 +64,7 @@ int main(int argc,char *argv[])
 
 			if (keys[SDL_SCANCODE_O])
 			{
-				ent1 = entity_load("agumon");
+				ent1 = entity_load("button");
 				ent1->update = &player_update;
 			}
 			else if (keys[SDL_SCANCODE_L])
