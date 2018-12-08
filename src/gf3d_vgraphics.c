@@ -830,5 +830,10 @@ void gf3d_vgraphics_move_model(Vector3D pos)
 	gf3d_vgraphics.ubo.model[3][2] = pos.z;
 }
 
+SDL_Window * get_window()
+{
+	return gf3d_vgraphics.main_window;
+}
+
 /*eol@eof*/
 

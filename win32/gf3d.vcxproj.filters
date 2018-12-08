@@ -78,6 +78,9 @@
     <ClCompile Include="..\src\audio.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\menu.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\gf3d_camera.h">
@@ -138,6 +141,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\audio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -5,12 +5,28 @@
 #include "gf3d_model.h"
 #include "gf3d_types.h"
 
+typedef enum
+{
+	//player
+	player,
+
+	//enemies
+
+	//items
+	hp,
+
+	//terrain
+	terrain
+
+}EntityType;
 
 typedef struct Entity_S
 {
 	Bool inuse;
 
 	Uint32 id;
+
+	EntityType type;
 
 	float scale;
 

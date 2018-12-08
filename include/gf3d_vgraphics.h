@@ -65,5 +65,7 @@ int gf3d_vgraphics_uniform_buffer_get_index(VkBuffer buffer);
 
 void gf3d_vgraphics_uniform_buffer_remove_use(VkBuffer index);
 
+SDL_Window *get_window();
+
 
 #endif

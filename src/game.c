@@ -1,4 +1,5 @@
-#include <SDL.h>            
+#include <SDL.h>  
+#include <SDL_ttf.h>
 
 #include "simple_logger.h"
 #include "gf3d_vgraphics.h"
@@ -18,10 +19,6 @@ int main(int argc,char *argv[])
     const Uint8 * keys;
     Uint32 bufferFrame = 0;
     VkCommandBuffer commandBuffer;
-   
-	Entity *ent1, *ent2, *ent3;
-	Entity *test;
-	Music *gameM;
     
     init_logger("gf3d.log");    
     slog("gf3d begin");
@@ -36,18 +33,11 @@ int main(int argc,char *argv[])
     
 	entity_system_init(1000);
 	audio_system_init(256, 16, 4, 1, 1, 1);
-
-	//test = entity_load("button");
-	ent3 = entity_load("cube");
-	ent3->position.x = 5;
-	ent3->position.y = 5;
-
-	//Play Game music
-	gameM = music_new("audio/littletown.mid", -1);
-	music_play(gameM);
 		
+	main_menu();
+
     // main game loop
-    slog("gf3d main loop begin");	
+    slog("gf3d main loop begin");		
 
     while(!done)
     {
@@ -61,21 +51,6 @@ int main(int argc,char *argv[])
         // for each mesh, get a command and configure it from the pool
         bufferFrame = gf3d_vgraphics_render_begin();
         commandBuffer = gf3d_command_rendering_begin(bufferFrame);
-
-			if (keys[SDL_SCANCODE_O])
-			{
-				ent1 = entity_load("button");
-				ent1->update = &player_update;
-			}
-			else if (keys[SDL_SCANCODE_L])
-			{
-				ent2 = entity_load("cube");
-				//ent2->update = &player_update;
-			}
-			else if (keys[SDL_SCANCODE_P])
-			{
-				entity_delete_all();
-			}
 
             entity_draw_all(bufferFrame, commandBuffer);
 
