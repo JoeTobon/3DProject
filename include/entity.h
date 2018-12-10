@@ -43,6 +43,9 @@ typedef struct Entity_S
 
 	Uint32 bufferFrame;
 
+	//Collision
+	Vector3D cubeXYZ;
+	Vector3D cubeWHD;
 
 	//Entity specific functions
 	void(*update)(struct Entity_S *self);
@@ -112,5 +115,17 @@ void entity_load_all();
 
 
  void entity_set_draw_ubo(Entity *entity);
+
+ /**
+ * @brief detects whether or not collsion occurs between two entities
+ * @param ent1 first entity
+ * @param ent2 second entity
+ */
+ Bool entity_collsion(Entity *ent1, Entity *ent2);
+
+ /**
+ * @brief makes all entities specified approach the player
+ */
+ void entity_collide_all();
 
 #endif

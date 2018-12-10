@@ -19,6 +19,7 @@ int main(int argc,char *argv[])
     const Uint8 * keys;
     Uint32 bufferFrame = 0;
     VkCommandBuffer commandBuffer;
+	Entity *ent1, *ent2;
     
     init_logger("gf3d.log");    
     slog("gf3d begin");
@@ -37,7 +38,13 @@ int main(int argc,char *argv[])
 	main_menu();
 
     // main game loop
-    slog("gf3d main loop begin");		
+    slog("gf3d main loop begin");	
+
+	ent1 = entity_load("cube");
+	ent1->update = &player_update;
+	ent1->position.x = 8;
+
+	ent2 = entity_load("cube");
 
     while(!done)
     {
@@ -55,6 +62,11 @@ int main(int argc,char *argv[])
             entity_draw_all(bufferFrame, commandBuffer);
 
 			entity_update_all();
+
+			if (entity_collsion(ent1, ent2))
+			{
+				entity_delete(ent2);
+			}
             
         gf3d_command_rendering_end(commandBuffer);
         gf3d_vgraphics_render_end(bufferFrame);

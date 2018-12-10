@@ -68,6 +68,14 @@ Entity *entity_new()
 			entity_manager.entList[i].inuse = 1;
 			entity_manager.entList[i].scale = 1;
 
+			entity_manager.entList[i].cubeXYZ.x = entity_manager.entList[i].position.x;
+			entity_manager.entList[i].cubeXYZ.y = entity_manager.entList[i].position.y;
+			entity_manager.entList[i].cubeXYZ.z = entity_manager.entList[i].position.z;
+
+			entity_manager.entList[i].cubeWHD.x = 2;
+			entity_manager.entList[i].cubeWHD.y = 2;
+			entity_manager.entList[i].cubeWHD.z = 2;
+
 			return &entity_manager.entList[i];
 		}
 	}
@@ -260,6 +268,11 @@ void player_update(Entity *entity)
 	{
 		entity->scale -= 0.05;
 	}
+
+	//updates bounding box
+	entity->cubeXYZ.x = entity->position.x;
+	entity->cubeXYZ.y = entity->position.y;
+	entity->cubeXYZ.z = entity->position.z;
 }
 
 void entity_update_all()
@@ -281,4 +294,47 @@ void entity_update_all()
 
 		entity_manager.entList[i].update(&entity_manager.entList[i]);
 	}
+}
+
+Bool entity_collsion(Entity *ent1, Entity *ent2)
+{
+	if (!ent1 || !ent2)
+	{
+		slog("ent1 or ent2 do not exist");
+		return;
+	}
+
+	if ((ent1->cubeXYZ.x + ent1->cubeWHD.x) < ent2->cubeXYZ.x)
+	{
+		return false;
+	}
+	else if ((ent2->cubeXYZ.x + ent1->cubeWHD.x) < ent1->cubeXYZ.x)
+	{
+		return false;
+	}
+	else if ((ent1->cubeXYZ.y + ent1->cubeWHD.y) < ent2->cubeXYZ.y)
+	{
+		return false;
+	}
+	else if ((ent2->cubeXYZ.y + ent2->cubeWHD.y) < ent1->cubeXYZ.y)
+	{
+		return false;
+	}
+	else if ((ent1->cubeXYZ.z + ent1->cubeWHD.z) < ent2->cubeXYZ.z)
+	{
+		return false;
+	}
+	else if ((ent2->cubeXYZ.z + ent2->cubeWHD.z) < ent1->cubeXYZ.z)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+void entity_collide_all()
+{
+
 }
