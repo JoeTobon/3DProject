@@ -128,4 +128,11 @@ void entity_load_all();
  */
  void entity_collide_all();
 
+/**
+ * @brief 
+ */
+void enemy_approach(Entity *ent1, Entity *ent2);
+
+void enemy_ranged(Entity *ent1, Entity *ent2);
+
 #endif

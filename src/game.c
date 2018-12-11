@@ -19,7 +19,7 @@ int main(int argc,char *argv[])
     const Uint8 * keys;
     Uint32 bufferFrame = 0;
     VkCommandBuffer commandBuffer;
-	Entity *ent1, *ent2;
+	Entity *ent1, *ent2, *ent3;
     
     init_logger("gf3d.log");    
     slog("gf3d begin");
@@ -46,6 +46,9 @@ int main(int argc,char *argv[])
 
 	ent2 = entity_load("cube");
 
+	ent3 = entity_load("cube");
+	ent3->position.x = -10;
+
     while(!done)
     {
         SDL_PumpEvents();   // update SDL's internal event structures
@@ -62,6 +65,10 @@ int main(int argc,char *argv[])
             entity_draw_all(bufferFrame, commandBuffer);
 
 			entity_update_all();
+
+			enemy_approach(ent1, ent2);
+
+			enemy_ranged(ent1, ent3);
 
 			if (entity_collsion(ent1, ent2))
 			{

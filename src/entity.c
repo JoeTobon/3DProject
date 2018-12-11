@@ -338,3 +338,116 @@ void entity_collide_all()
 {
 
 }
+
+void enemy_approach(Entity *ent1, Entity *ent2)
+{
+	float deltaX;
+	float deltaY;
+
+	float xStep;
+	float yStep;
+	float pathResult;
+
+	float speed;
+	float timeDelta;
+	float xMove;
+	float yMove;
+
+	timeDelta = .01;
+	speed = 2;
+
+	if (!ent1 || !ent2)
+	{
+		return;
+	}
+	
+	//calculate deltas
+	deltaX = ent1->position.x - ent2->position.x;
+	deltaY = ent1->position.y - ent2->position.y;
+
+	//find unit vector
+	pathResult = (deltaX * deltaX) + (deltaY * deltaY);
+	pathResult = sqrt(pathResult);
+
+	//normalize deltas
+	xStep = deltaX / pathResult;
+	yStep = deltaY / pathResult;
+
+
+	//move
+
+	xMove = ((int)deltaX) * (speed)* (timeDelta);
+	yMove = ((int)deltaY) * (speed)* (timeDelta);
+
+	if (deltaX == 0 && deltaY == 0)
+	{
+		return;
+	}
+	
+	ent2->position.x += xMove;
+	ent2->position.y += yMove;
+
+
+	//updates bounding box
+
+	ent2->cubeXYZ.x = ent2->position.x;
+	ent2->cubeXYZ.y = ent2->position.y;
+	ent2->cubeXYZ.z = ent2->position.z;	
+}
+
+void enemy_ranged(Entity *ent1, Entity *ent2)
+{
+	float deltaX;
+	float deltaY;
+
+	float xStep;
+	float yStep;
+	float pathResult;
+
+	float speed;
+	float timeDelta;
+	float xMove;
+	float yMove;
+
+	timeDelta = .01;
+	speed = 1;
+
+	if (!ent1 || !ent2)
+	{
+		return;
+	}
+
+	//calculate deltas
+	deltaX = ent1->position.x - ent2->position.x;
+	deltaY = ent1->position.y - ent2->position.y;
+
+	//find unit vector
+	pathResult = (deltaX * deltaX) + (deltaY * deltaY);
+	pathResult = sqrt(pathResult);
+
+	//normalize deltas
+	xStep = deltaX / pathResult;
+	yStep = deltaY / pathResult;
+
+	//move
+	xMove = ((int)deltaX) * (speed)* (timeDelta);
+	yMove = ((int)deltaY) * (speed)* (timeDelta);
+
+	if (deltaX == 0 && deltaY == 0)
+	{
+		return;
+	}
+
+	if (deltaX <= 10 && deltaY <= 10)
+	{
+		ent2->position.x -= xMove;
+		ent2->position.y -= yMove;
+	}
+
+
+	//updates bounding box
+
+	ent2->cubeXYZ.x = ent2->position.x;
+	ent2->cubeXYZ.y = ent2->position.y;
+	ent2->cubeXYZ.z = ent2->position.z;
+}
