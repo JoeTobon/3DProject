@@ -19,7 +19,7 @@ int main(int argc,char *argv[])
     const Uint8 * keys;
     Uint32 bufferFrame = 0;
     VkCommandBuffer commandBuffer;
-	Entity *ent1, *ent2, *ent3;
+	Entity *ent1, *ent2, *ent3, *world;
     
     init_logger("gf3d.log");    
     slog("gf3d begin");
@@ -48,6 +48,12 @@ int main(int argc,char *argv[])
 
 	ent3 = entity_load("cube");
 	ent3->position.x = -10;
+
+	world = entity_load("cube");
+	world->position.z = -10;
+	world->scale.x = 100;
+	world->scale.y = 100;
+	world->scale.z = 4;
 
     while(!done)
     {
