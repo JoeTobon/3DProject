@@ -66,7 +66,9 @@ Entity *entity_new()
 			memset(&entity_manager.entList[i], 0, sizeof(Entity));
 			entity_manager.entList[i].id = entity_manager.increment++;
 			entity_manager.entList[i].inuse = 1;
-			entity_manager.entList[i].scale = 1;
+			entity_manager.entList[i].scale.x = 1;
+			entity_manager.entList[i].scale.y = 1;
+			entity_manager.entList[i].scale.z = 1;
 
 			entity_manager.entList[i].cubeXYZ.x = entity_manager.entList[i].position.x;
 			entity_manager.entList[i].cubeXYZ.y = entity_manager.entList[i].position.y;
@@ -201,10 +203,10 @@ void entity_set_draw_ubo(Entity *entity)
 	memset(&entity->relative_rotation, 0, sizeof(Vector3D));
 
 	//Scaling
-	entity->ubo.model[0][0] *= entity->scale;
-	entity->ubo.model[1][1] *= entity->scale;
-	entity->ubo.model[2][2] *= entity->scale;
-	entity->scale = 1;
+	entity->ubo.model[0][0] *= entity->scale.x;
+	entity->ubo.model[1][1] *= entity->scale.y;
+	entity->ubo.model[2][2] *= entity->scale.z;
+	vector3d_set(entity->scale, 1, 1, 1);
 }
 
 void player_update(Entity *entity)
@@ -240,33 +242,6 @@ void player_update(Entity *entity)
 	else if (keys[SDL_SCANCODE_D])
 	{
 		entity->position.x -= 0.5;
-	}
-
-	//rotation
-	if (keys[SDL_SCANCODE_X])
-	{
-		entity->relative_rotation.x += 0.05;
-	}
-	else if (keys[SDL_SCANCODE_Y])
-	{
-		entity->relative_rotation.y += 0.05;
-	}
-	else if (keys[SDL_SCANCODE_Z])
-	{
-		entity->relative_rotation.z += 0.05;
-	}
-
-	//Keeping track of overall rotation
-	vector3d_add(entity->rotation, entity->relative_rotation, entity->rotation);  
-
-	//scaling
-	if (keys[SDL_SCANCODE_J])
-	{
-		entity->scale += 0.05;
-	}
-	else if (keys[SDL_SCANCODE_K])
-	{
-		entity->scale -= 0.05;
 	}
 
 	//updates bounding box

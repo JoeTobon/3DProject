@@ -28,7 +28,7 @@ typedef struct Entity_S
 
 	EntityType type;
 
-	float scale;
+	Vector3D scale;
 
 	//Graphics
 	Model *model;

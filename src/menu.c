@@ -22,12 +22,16 @@ void main_menu()
 
 	//Set menu graphics
 	play = entity_load("play");
-	play->scale = 2.5;
+	play->scale.x = 2.5;
+	play->scale.y = 2.5;
+	play->scale.z = 2.5;
 	play->position.x = 7;
 	play->position.z = 2.5;
 
 	controls = entity_load("controls");
-	controls->scale = 2.5;
+	controls->scale.x = 2.5;
+	controls->scale.y = 2.5;
+	controls->scale.z = 2.5;
 	controls->position.x = -7;
 
 	while (menuBool)
