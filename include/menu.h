@@ -9,16 +9,6 @@
 /**
  * @brief Will handle the processes and drawing of the main menu
  */
-void main_menu();
-
-/**
- * @brief  Will handle all the processes and drawing of the control screen
- */
-void control_screen();
-
-/**
-* @brief  Will handle all the processes and drawing of the pause menu
-*/
-void pause_menu();
+int main_menu();
 
 #endif

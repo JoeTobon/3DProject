@@ -1,6 +1,6 @@
 #include "menu.h"
 
-void main_menu()
+int main_menu()
 {
 	int menuBool = 1;
 	float timer = 0;
@@ -28,7 +28,7 @@ void main_menu()
 	play->position.x = 7;
 	play->position.z = 2.5;
 
-	controls = entity_load("controls");
+	controls = entity_load("quit");
 	controls->scale.x = 2.5;
 	controls->scale.y = 2.5;
 	controls->scale.z = 2.5;
@@ -91,18 +91,12 @@ void main_menu()
 
 	if (c == true)
 	{
-		control_screen();
+		return 1;
+	}
+	else
+	{
+		return 0;
 	}
 
 	//else exit loop and start main game loop
-}
-
-void control_screen()
-{
-
-}
-
-void pause_menu()
-{
-
 }

@@ -16,10 +16,11 @@
 int main(int argc,char *argv[])
 {
     int done = 0;
+	int cont = 0;
     const Uint8 * keys;
     Uint32 bufferFrame = 0;
     VkCommandBuffer commandBuffer;
-	Entity *ent1, *ent2, *ent3, *world;
+	Entity *player, *en1, *en2, *world;
     
     init_logger("gf3d.log");    
     slog("gf3d begin");
@@ -35,57 +36,66 @@ int main(int argc,char *argv[])
 	entity_system_init(1000);
 	audio_system_init(256, 16, 4, 1, 1, 1);
 		
-	main_menu();
+	cont = main_menu();
 
     // main game loop
     slog("gf3d main loop begin");	
 
-	ent1 = entity_load("cube");
-	ent1->update = &player_update;
-	ent1->position.x = 8;
+	//player
+	player = entity_load("cube");
+	player->update = &player_update;
+	player->position.x = 8;
 
-	ent2 = entity_load("cube");
+	//Enemies
+	en1 = entity_load("cube");
 
-	ent3 = entity_load("cube");
-	ent3->position.x = -10;
+	en2 = entity_load("cube");
+	en2->position.x = -10;
 
-	world = entity_load("cube");
+	//items
+
+
+	//world
+	world = entity_load("floor");
 	world->position.z = -10;
 	world->scale.x = 100;
 	world->scale.y = 100;
 	world->scale.z = 4;
 
-    while(!done)
-    {
-        SDL_PumpEvents();   // update SDL's internal event structures
-        keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
-        //update game things here
-        
-        gf3d_vgraphics_rotate_camera(0.01);
-        
-        // configure render command for graphics command pool
-        // for each mesh, get a command and configure it from the pool
-        bufferFrame = gf3d_vgraphics_render_begin();
-        commandBuffer = gf3d_command_rendering_begin(bufferFrame);
+	if (cont == 0)
+	{
+		while (!done)
+		{
+			SDL_PumpEvents();   // update SDL's internal event structures
+			keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
+			//update game things here
 
-            entity_draw_all(bufferFrame, commandBuffer);
+			gf3d_vgraphics_rotate_camera(0.01);
+
+			// configure render command for graphics command pool
+			// for each mesh, get a command and configure it from the pool
+			bufferFrame = gf3d_vgraphics_render_begin();
+			commandBuffer = gf3d_command_rendering_begin(bufferFrame);
+
+			entity_draw_all(bufferFrame, commandBuffer);
 
 			entity_update_all();
 
-			enemy_approach(ent1, ent2);
+			enemy_approach(player, en1);
 
-			enemy_ranged(ent1, ent3);
+			enemy_ranged(player, en2);
 
-			if (entity_collsion(ent1, ent2))
+			if (entity_collsion(player, en1))
 			{
-				entity_delete(ent2);
+				entity_delete(en1);
 			}
-            
-        gf3d_command_rendering_end(commandBuffer);
-        gf3d_vgraphics_render_end(bufferFrame);
 
-        if (keys[SDL_SCANCODE_ESCAPE])done = 1; // exit condition
-    }    
+			gf3d_command_rendering_end(commandBuffer);
+			gf3d_vgraphics_render_end(bufferFrame);
+
+			if (keys[SDL_SCANCODE_ESCAPE])done = 1; // exit condition
+		}
+	}
     
     vkDeviceWaitIdle(gf3d_vgraphics_get_default_logical_device());    
     //cleanup
