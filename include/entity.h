@@ -11,9 +11,12 @@ typedef enum
 	player,
 
 	//enemies
+	melee,
+	ranged,
 
 	//items
 	hp,
+	damage,
 
 	//terrain
 	terrain
@@ -27,6 +30,8 @@ typedef struct Entity_S
 	Uint32 id;
 
 	EntityType type;
+
+	int health;
 
 	Vector3D scale;
 

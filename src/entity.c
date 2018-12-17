@@ -69,15 +69,7 @@ Entity *entity_new()
 			entity_manager.entList[i].scale.x = 1;
 			entity_manager.entList[i].scale.y = 1;
 			entity_manager.entList[i].scale.z = 1;
-
-			entity_manager.entList[i].cubeXYZ.x = entity_manager.entList[i].position.x;
-			entity_manager.entList[i].cubeXYZ.y = entity_manager.entList[i].position.y;
-			entity_manager.entList[i].cubeXYZ.z = entity_manager.entList[i].position.z;
-
-			entity_manager.entList[i].cubeWHD.x = 2;
-			entity_manager.entList[i].cubeWHD.y = 2;
-			entity_manager.entList[i].cubeWHD.z = 2;
-
+		
 			return &entity_manager.entList[i];
 		}
 	}
@@ -119,6 +111,14 @@ void entity_draw_all(Uint32 bufferFrame, VkCommandBuffer commandBuffer)
 	{
 		if (entity_manager.entList[i].inuse)
 		{
+			entity_manager.entList[i].cubeXYZ.x = entity_manager.entList[i].position.x;
+			entity_manager.entList[i].cubeXYZ.y = entity_manager.entList[i].position.y;
+			entity_manager.entList[i].cubeXYZ.z = entity_manager.entList[i].position.z;
+
+			entity_manager.entList[i].cubeWHD.x = 2;
+			entity_manager.entList[i].cubeWHD.y = 2;
+			entity_manager.entList[i].cubeWHD.z = 2;
+
 			entity_draw(&entity_manager.entList[i], bufferFrame, commandBuffer);
 		}
 	}
@@ -311,6 +311,105 @@ Bool entity_collsion(Entity *ent1, Entity *ent2)
 
 void entity_collide_all()
 {
+	int i, j;
+	Entity *playEnt = NULL;
+
+	//Finds player entity
+	for (i = 0; i < entity_manager.maxEnt; i++)
+	{
+		if (entity_manager.entList[i].inuse == 0)
+		{
+			continue;
+		}
+
+		if (entity_manager.entList[i].type == player)
+		{
+			playEnt = &entity_manager.entList[i];
+			break;
+		}
+	}
+
+	//checks collisions between player and enemies
+	for (i = 0; i < entity_manager.maxEnt; i++)
+	{
+		if (entity_manager.entList[i].inuse == 0 || entity_manager.entList[i].type == player)
+		{
+			continue;
+		}
+
+		if (entity_manager.entList[i].type == melee || entity_manager.entList[i].type == ranged)
+		{
+			if (entity_collsion(playEnt, &entity_manager.entList[i]) == true)// && playEnt->invincible == false)
+			{
+				playEnt->health--;
+
+				//Enemy dies on impact for now
+				entity_delete(&entity_manager.entList[i]);
+			}
+		}
+	}
+
+	//checks collisions between player and ranged
+	for (i = 0; i < entity_manager.maxEnt; i++)
+	{
+		if (entity_manager.entList[i].inuse == 0 || entity_manager.entList[i].type == player)
+		{
+			continue;
+		}
+
+		if (entity_manager.entList[i].type == ranged)
+		{
+			//approach handled here
+			enemy_ranged(playEnt, &entity_manager.entList[i]);
+		}
+		else if (entity_manager.entList[i].type == melee)
+		{
+			enemy_approach(playEnt, &entity_manager.entList[i]);
+		}
+	}
+
+	//////////Player and Item Collisions//////////
+
+	//checks collsion between player and health 
+	for (i = 0; i < entity_manager.maxEnt; i++)
+	{
+		if (entity_manager.entList[i].inuse == 0)
+		{
+			continue;
+		}
+
+		if (entity_manager.entList[i].type == hp)
+		{
+			if (entity_collsion(&entity_manager.entList[i], playEnt) == true)
+			{
+				if (playEnt->health < 3)
+				{
+					playEnt->health++;
+					entity_delete(&entity_manager.entList[i]);
+				}
+			}
+		}
+	}
+
+	//checks collsion between player and damage
+	for (i = 0; i < entity_manager.maxEnt; i++)
+	{
+		if (entity_manager.entList[i].inuse == 0)
+		{
+			continue;
+		}
+
+		if (entity_manager.entList[i].type == damage)
+		{
+			if (entity_collsion(&entity_manager.entList[i], playEnt) == true)
+			{
+				//set to false after certain amount of time
+				//call seperate function
+				//playEnt->damage = true;
+				entity_delete(&entity_manager.entList[i]);
+			}
+		}
+	}
 
 }
 
@@ -362,9 +461,7 @@ void enemy_approach(Entity *ent1, Entity *ent2)
 	ent2->position.x += xMove;
 	ent2->position.y += yMove;
 
-
 	//updates bounding box
-
 	ent2->cubeXYZ.x = ent2->position.x;
 	ent2->cubeXYZ.y = ent2->position.y;
 	ent2->cubeXYZ.z = ent2->position.z;	
@@ -385,7 +482,7 @@ void enemy_ranged(Entity *ent1, Entity *ent2)
 	float yMove;
 
 	timeDelta = .01;
-	speed = 1;
+	speed = 2;
 
 	if (!ent1 || !ent2)
 	{
@@ -415,13 +512,19 @@ void enemy_ranged(Entity *ent1, Entity *ent2)
 
 	if (deltaX <= 10 && deltaY <= 10)
 	{
-		ent2->position.x -= xMove;
-		ent2->position.y -= yMove;
+		if (ent2->position.x >= -12 && ent2->position.x <= 12)
+		{
+			ent2->position.x -= xMove;
+			ent2->position.y -= yMove;
+		}
+		else
+		{
+			ent2->position.x += xMove;
+			ent2->position.y += yMove;
+		}
 	}
 
-
 	//updates bounding box
-
 	ent2->cubeXYZ.x = ent2->position.x;
 	ent2->cubeXYZ.y = ent2->position.y;
 	ent2->cubeXYZ.z = ent2->position.z;

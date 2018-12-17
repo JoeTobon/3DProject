@@ -20,7 +20,8 @@ int main(int argc,char *argv[])
     const Uint8 * keys;
     Uint32 bufferFrame = 0;
     VkCommandBuffer commandBuffer;
-	Entity *player, *en1, *en2, *world;
+	Entity *play, *en1, *en2, *world;
+	Entity *heal, *dam;
     
     init_logger("gf3d.log");    
     slog("gf3d begin");
@@ -42,18 +43,32 @@ int main(int argc,char *argv[])
     slog("gf3d main loop begin");	
 
 	//player
-	player = entity_load("cube");
-	player->update = &player_update;
-	player->position.x = 8;
+	play = entity_load("cube");
+	play->type = player;
+	play->update = &player_update;
+	play->position.x = 8;
 
 	//Enemies
 	en1 = entity_load("cube");
+	en1->type = melee;
 
 	en2 = entity_load("cube");
+	en2->type = ranged;
 	en2->position.x = -10;
 
 	//items
+	heal = entity_load("health");
+	heal->type = hp;
+	heal->scale.x = .75;
+	heal->scale.y = .75;
+	heal->scale.z = .75;
+	heal->position.x = -5;
 
+	dam = entity_load("damage");
+	dam->type = damage;
+	dam->scale.x = .75;
+	dam->scale.y = .75;
+	dam->scale.z = .75;
 
 	//world
 	world = entity_load("floor");
@@ -81,14 +96,9 @@ int main(int argc,char *argv[])
 
 			entity_update_all();
 
-			enemy_approach(player, en1);
+			//enemy_ranged(play, en2);
 
-			enemy_ranged(player, en2);
-
-			if (entity_collsion(player, en1))
-			{
-				entity_delete(en1);
-			}
+			entity_collide_all();
 
 			gf3d_command_rendering_end(commandBuffer);
 			gf3d_vgraphics_render_end(bufferFrame);
