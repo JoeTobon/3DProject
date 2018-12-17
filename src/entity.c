@@ -61,10 +61,11 @@ Entity *entity_new()
 
 	for (i = 0; i < entity_manager.maxEnt; i++)
 	{
-		if (entity_manager.entList[i].inuse == 0)
+		if (entity_manager.entList[i].inuse == 0 && entity_manager.entList[i].type != hud)
 		{
 			memset(&entity_manager.entList[i], 0, sizeof(Entity));
 			entity_manager.entList[i].id = entity_manager.increment++;
+			entity_manager.entList[i].damTime = 0;
 			entity_manager.entList[i].inuse = 1;
 			entity_manager.entList[i].scale.x = 1;
 			entity_manager.entList[i].scale.y = 1;
@@ -221,25 +222,42 @@ void player_update(Entity *entity)
 		return;
 	}
 
+	if (entity->health <= 0)
+	{
+		entity_delete(entity);
+	}
+
 	if (!entity->inuse)
 	{
 		return;
 	}
 
+	//checks invincibility status
+	if (entity->damage == true)
+	{
+		entity->damTime += .1;
+	}
+
+	if (entity->damTime >= 6)
+	{
+		entity->damage = false;
+		entity->damTime = 0;
+	}
+
 	//movement
-	if (keys[SDL_SCANCODE_W])
+	if (keys[SDL_SCANCODE_W] && entity->position.y >= -15)
 	{
 		entity->position.y -= 0.5;
 	}
-	else if (keys[SDL_SCANCODE_S])
+	else if (keys[SDL_SCANCODE_S] && entity->position.y <= 15)
 	{
 		entity->position.y += 0.5;
 	}
-	else if (keys[SDL_SCANCODE_A])
+	else if (keys[SDL_SCANCODE_A] && entity->position.x <= 12)
 	{
 		entity->position.x += 0.5;
 	}
-	else if (keys[SDL_SCANCODE_D])
+	else if (keys[SDL_SCANCODE_D] && entity->position.x >=  -12)
 	{
 		entity->position.x -= 0.5;
 	}
@@ -248,6 +266,40 @@ void player_update(Entity *entity)
 	entity->cubeXYZ.x = entity->position.x;
 	entity->cubeXYZ.y = entity->position.y;
 	entity->cubeXYZ.z = entity->position.z;
+}
+
+void player_hud(Entity *entity, Entity *h1, Entity *h2, Entity *damOn)
+{
+	if (!entity)
+	{
+		return;
+	}
+
+	if (entity->health == 2)
+	{
+		h2->inuse = 1;
+		h1->inuse = 1;
+	}
+	else if (entity->health == 1)
+	{
+		h2->inuse = 0;
+		h1->inuse = 1;
+	}
+	else if (entity->health == 0)
+	{
+		h2->inuse = 0;
+		h1->inuse = 0;
+		damOn->inuse = 0;
+	}
+
+	if (entity->damage == true)
+	{
+		damOn->inuse = 1;
+	}
+	else if (entity->damage == false)
+	{
+		damOn->inuse = 0;
+	}
 }
 
 void entity_update_all()
@@ -329,6 +381,11 @@ void entity_collide_all()
 		}
 	}
 
+	if (!playEnt)
+	{
+		return;
+	}
+
 	//checks collisions between player and enemies
 	for (i = 0; i < entity_manager.maxEnt; i++)
 	{
@@ -339,9 +396,12 @@ void entity_collide_all()
 
 		if (entity_manager.entList[i].type == melee || entity_manager.entList[i].type == ranged)
 		{
-			if (entity_collsion(playEnt, &entity_manager.entList[i]) == true)// && playEnt->invincible == false)
+			if (entity_collsion(playEnt, &entity_manager.entList[i]) == true)
 			{
-				playEnt->health--;
+				if (playEnt->damage == false)
+				{
+					playEnt->health--;
+				}
 
 				//Enemy dies on impact for now
 				entity_delete(&entity_manager.entList[i]);
@@ -382,7 +442,7 @@ void entity_collide_all()
 		{
 			if (entity_collsion(&entity_manager.entList[i], playEnt) == true)
 			{
-				if (playEnt->health < 3)
+				if (playEnt->health <= 2)
 				{
 					playEnt->health++;
 					entity_delete(&entity_manager.entList[i]);
@@ -403,9 +463,7 @@ void entity_collide_all()
 		{
 			if (entity_collsion(&entity_manager.entList[i], playEnt) == true)
 			{
-				//set to false after certain amount of time
-				//call seperate function
-				//playEnt->damage = true;
+				playEnt->damage = true;
 				entity_delete(&entity_manager.entList[i]);
 			}
 		}

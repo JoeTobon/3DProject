@@ -18,20 +18,21 @@ typedef enum
 	hp,
 	damage,
 
-	//terrain
-	terrain
+	hud
 
 }EntityType;
 
 typedef struct Entity_S
 {
 	Bool inuse;
+	Bool damage;
 
 	Uint32 id;
 
 	EntityType type;
 
 	int health;
+	float damTime;
 
 	Vector3D scale;
 
@@ -114,10 +115,14 @@ void entity_load_all();
  void entity_update_all();
 
  /**
- * @brief update function for the player entity
- */
+  * @brief update function for the player entity
+  */
  void player_update();
 
+ /**
+  * @brief update hud for the player entity
+  */
+ void player_hud(Entity *entity, Entity *h1, Entity *h2, Entity *damOn);
 
  void entity_set_draw_ubo(Entity *entity);
 

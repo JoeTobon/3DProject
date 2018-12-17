@@ -22,6 +22,7 @@ int main(int argc,char *argv[])
     VkCommandBuffer commandBuffer;
 	Entity *play, *en1, *en2, *world;
 	Entity *heal, *dam;
+	Entity *h1, *h2, *damOn;
     
     init_logger("gf3d.log");    
     slog("gf3d begin");
@@ -47,6 +48,7 @@ int main(int argc,char *argv[])
 	play->type = player;
 	play->update = &player_update;
 	play->position.x = 8;
+	play->health = 1;
 
 	//Enemies
 	en1 = entity_load("cube");
@@ -69,6 +71,35 @@ int main(int argc,char *argv[])
 	dam->scale.x = .75;
 	dam->scale.y = .75;
 	dam->scale.z = .75;
+
+	//HUD
+	h1 = entity_load("health");
+	h1->type = hud;
+	h1->inuse = 0;
+	h1->position.x = 10;
+	h1->position.z = 6;
+	h1->scale.x = .5;
+	h1->scale.y = .5;
+	h1->scale.z = .5;
+
+	h2 = entity_load("health");
+	h2->type = hud;
+	h2->inuse = 0;
+	h2->position.x = 8;
+	h2->position.z = 6;
+	h2->scale.x = .5;
+	h2->scale.y = .5;
+	h2->scale.z = .5;
+
+	damOn = entity_load("damage");
+	damOn->type = hud;
+	damOn->inuse = 0;
+	damOn->position.x = -5;
+	damOn->position.z = 6;
+	damOn->position.y = 3;
+	damOn->scale.x = .5;
+	damOn->scale.y = .5;
+	damOn->scale.z = .5;
 
 	//world
 	world = entity_load("floor");
@@ -96,7 +127,7 @@ int main(int argc,char *argv[])
 
 			entity_update_all();
 
-			//enemy_ranged(play, en2);
+			player_hud(play, h1, h2, damOn);
 
 			entity_collide_all();
 
