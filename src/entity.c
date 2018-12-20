@@ -238,7 +238,7 @@ void player_update(Entity *entity)
 		entity->damTime += .1;
 	}
 
-	if (entity->damTime >= 6)
+	if (entity->damTime >= 12)
 	{
 		entity->damage = false;
 		entity->damTime = 0;
